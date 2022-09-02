@@ -1,0 +1,102 @@
+/* main */
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+html{
+    --black: #0D114F;
+    --white: #FAFAFA;
+    --red: #E83F5B;
+    --light-blue: #E0ECFF;
+    --blue: #3485FF;
+    --background: #def0ff;
+    --overlay: #040911;
+    --icons-details: #A5B0C1;
+    --grey-dark: #4D5E77;
+    --grey-blue: #A1B2CD;
+    --grey-light: #E5EAF1;
+    --grey-medium: #eaecf2;
+
+    /* 1rem = 16px (Padrão navegaddor)*/
+    font-size: 62.5%; /* 10 px */
+}
+
+body{
+    background: var(--background);
+}
+
+.navbar1{
+    padding: 0.7rem;
+    background: #1f2f55;
+    height:7rem;
+    position: fixed;
+    width: 100%;
+}
+
+.sidebar1 {
+  width: 20rem;
+  position: fixed;
+  z-index: 1;
+  top: 7rem;
+  bottom: 0;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+  font-size:15px;
+}
+
+.sidebar1 > ul > li > a{
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+}
+.sidebar1::-webkit-scrollbar, .sidebar2::-webkit-scrollbar{
+    width:1px;
+    background: grey;
+}
+
+.sidebar1 a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  color: #2196F3;
+  display: block;
+}
+
+.sidebar1 a:hover {
+  color: #064579;
+}
+
+.sidebar2 {
+  width: 15rem;
+  position: fixed;
+  z-index: 1;
+  top: 7rem;
+  bottom: 0;
+  right:0;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+  direction: rtl;
+  overflow:auto;
+}
+
+.sidebar2 a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #2196F3;
+  display: block;
+}
+
+.sidebar2 a:hover {
+  color: #064579;
+}
+
+.main {
+  margin-left: 20rem; /* Same width as the sidebar + left position in px */
+  font-size: 2rem; /* Increased text to enable scrolling */
+  padding: 4rem 15rem 1rem 1rem;
+}
