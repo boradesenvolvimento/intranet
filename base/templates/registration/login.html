@@ -34,11 +34,14 @@
     </button>
   </div>
 </nav>
-{% if user.is_authenticated %}
-
-{% block content %}
-
-{% endblock %}
-{% endif %}
+<div class="container main">
+    <center>
+    <form method="post" class="mt-5">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary profile-button" style="height:3rem;width:10rem;font-size:1.5rem;">Entrar</button>
+    </form>
+    </center>
+</div>
 </body>
 </html>

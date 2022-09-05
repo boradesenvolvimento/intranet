@@ -1,0 +1,71 @@
+{% extends 'parts/base.html' %}
+{% block content %}
+{% load globaltags %}
+<section>
+{% include 'parts/sidebarmain.html' %}
+
+<div class="container main">
+{% for message in messages %}
+<div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+    <div class="container rounded mb-5 border-profile">
+        <div class="row">
+            <div class="col-4 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img class="rounded-circle mt-5" width="150" src="/media/{{ usuario.foto_perfil }}">
+                    <span class="font-weight-bold">{{ usuario.nomefunc }}</span>
+                    <span class="text-black-50">{{ usuario.bio|default_if_none:'' }}</span>
+                    <span class="text-black-50">{{ usuario.filial|default_if_none:'' }}  Ramal {{ usuario.ramal|default_if_none:'Não cadastrado' }}</span>
+                </div>
+            </div>
+
+            <div class="col border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="text-right">Perfil
+                            {% if user|parse_string == usuario|parse_string  %}
+                            <a href="{% url 'base:self_profile' user  %}"><ion-icon name="create-outline"></ion-icon></a>
+                            {% endif %}
+                        </h2>
+                    </div><hr>
+                    <div class="col">
+                        <h3>Nome Completo</h3>
+                        <div class="container">
+                        <p>{{ usuario.nomefunc }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>UF</h3>
+                        <div class="container">
+                        <p>{{ usuario.uf }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>Data Nascimento</h3>
+                        <div class="container">
+                        <p>{{ usuario.dt_nascfunc }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>Email</h3>
+                        <div class="container">
+                        <p>{{ usuario.email|default_if_none:'Não cadastrado' }}</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3>Telefone</h3>
+                        <div class="container">
+                        <p>{{ usuario.telefone }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

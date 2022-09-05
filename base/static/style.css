@@ -36,6 +36,7 @@ body{
     width: 100%;
 }
 
+/* sidebar \/ */
 .sidebar1 {
   width: 20rem;
   position: fixed;
@@ -84,7 +85,7 @@ body{
 }
 
 .sidebar2 a {
-  padding: 6px 8px 6px 16px;
+  padding: 6px 16px 6px 8px;
   text-decoration: none;
   font-size: 25px;
   color: #2196F3;
@@ -94,9 +95,92 @@ body{
 .sidebar2 a:hover {
   color: #064579;
 }
+/* sidebar /\  */
+
 
 .main {
   margin-left: 20rem; /* Same width as the sidebar + left position in px */
   font-size: 2rem; /* Increased text to enable scrolling */
-  padding: 4rem 15rem 1rem 1rem;
+  padding: 8rem 15rem 1rem 1rem;
 }
+
+.h7, .h5 {
+    font-size: 1.5rem;
+}
+
+.gedf-wrapper {
+    margin-top: 1rem;
+}
+
+@media (min-width: 992px) {
+    .gedf-main {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+    .gedf-card {
+        margin-bottom: 2.77rem;
+    }
+}
+
+.dropdown-toggle::after {
+    content: none;
+    display: none;
+}
+
+.mr-2, .mx-2 {
+    margin-right: 0.5rem!important;
+}
+
+.ml-2, .mx-2 {
+    margin-left: 0.5rem!important;
+}
+
+/* card profile */
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: #1f2f55;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #682773
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 1.5rem;
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+
+.border-profile{
+    border: ridge 5px var(--grey-dark);
+    padding: 2rem 3rem 0 0;
+    justify-content: center;
+}
+
+/* profile /\ */
