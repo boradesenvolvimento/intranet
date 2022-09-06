@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
-#import MySQLdb
+import MySQLdb
 import cx_Oracle
 from pathlib import Path
 from django.contrib.messages import constants as messages
@@ -36,12 +36,12 @@ SECRET_KEY = 'django-insecure-k0pp(yvfl2&h2(b+$1al@-k5pq-wknufpa$-l##0904%qqgxf+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #develop
-DEBUG = True
-ALLOWED_HOSTS = []
+#DEBUG = True
+#ALLOWED_HOSTS = []
 
 #production
-#DEBUG = False
-#ALLOWED_HOSTS = ["www.bora.tec.br","www.bora.tec.br/intranet", "bora.tec.br", "bora.tec.br/intranet"]
+DEBUG = False
+ALLOWED_HOSTS = ["www.bora.tec.br","www.bora.tec.br/intranet", "bora.tec.br", "bora.tec.br/intranet"]
 
 # Application definition
 
@@ -90,24 +90,24 @@ WSGI_APPLICATION = 'intranet.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 #development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-#production
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'bora01',
-#        'USER': 'bora01',
-#        'PASSWORD': 'Bor4dev01230database',
-#        'HOST': 'mysql.bora.tec.br',
-#        'PORT': '3306',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
 #}
+
+#production
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bora01',
+        'USER': 'bora01',
+        'PASSWORD': 'Bor4dev01230database',
+        'HOST': 'mysql.bora.tec.br',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -146,8 +146,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = "/home/intranet/www/static"
-MEDIA_ROOT = "/home/intranet/www/media"
+STATIC_ROOT = "/home/bora/www/static"
+MEDIA_ROOT = "/home/bora/www/media"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 
