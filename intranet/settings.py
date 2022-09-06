@@ -126,8 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/intranet/'
+LOGOUT_REDIRECT_URL = '/intranet/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
