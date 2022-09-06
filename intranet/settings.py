@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import MySQLdb
+import cx_Oracle
 from pathlib import Path
 from django.contrib.messages import constants as messages
 from django.urls import reverse_lazy
@@ -34,12 +36,12 @@ SECRET_KEY = 'django-insecure-k0pp(yvfl2&h2(b+$1al@-k5pq-wknufpa$-l##0904%qqgxf+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #develop
-DEBUG = True
-ALLOWED_HOSTS = []
+#DEBUG = True
+#ALLOWED_HOSTS = []
 
 #production
-#DEBUG = False
-#ALLOWED_HOSTS = ["www.bora.tec.br","www.bora.tec.br/intranet", "bora.tec.br", "bora.tec.br/intranet"]
+DEBUG = False
+ALLOWED_HOSTS = ["www.bora.tec.br","www.bora.tec.br/intranet", "bora.tec.br", "bora.tec.br/intranet"]
 
 # Application definition
 
