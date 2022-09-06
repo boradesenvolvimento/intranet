@@ -12,19 +12,19 @@ from django.views import View
 from .models import Profile, check_tel, only_int, Posts, Image
 
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='/intranet/accounts/login/')
 def index_view(request):
     context = {
         'posts': Posts.objects.all().order_by('-pub_date'),
     }
     return render(request, 'index.html', context)
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='/intranet/accounts/login/')
 def perfil_usuario(request, user):
     usuario = Profile.objects.get(user_ref__username=user)
     return render(request, 'userprofile.html', {'usuario':usuario})
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='/intranet/accounts/login/')
 def self_profile(request, user):
     if str(user) == str(request.user):
         usuario = Profile.objects.get(user_ref__username=user)
@@ -71,6 +71,7 @@ def self_profile(request, user):
     else:
         return HttpResponse('erro')
 
+@login_required(login_url='/intranet/accounts/login/')
 def create_posts(request):
     if request.method == 'POST':
         body = request.POST.get('body')
