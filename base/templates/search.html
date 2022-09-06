@@ -1,0 +1,27 @@
+{% extends 'parts/base.html' %}
+{% block content %}
+{% include 'parts/sidebarmain.html' %}
+<div class="container main">
+{% for message in messages %}
+<div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+    {% for profile in profile_list %}
+    <div class="row mt-3">
+        <div class="col-5 col-sm-12 border-bottom">
+            <div class="container">
+                {% if profile %}
+                <p><a style="text-decoration:none;" href="{% url 'base:perfil_usuario' profile %}">
+                    <img src="/media/{{ profile.foto_perfil }}" width="50"> @{{ profile.nomefunc }}</a></p>
+                {% else %}
+                <h3>Não encontrado usuário da busca, gentileza verificar.</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

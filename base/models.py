@@ -68,4 +68,5 @@ class Posts(models.Model):
 
 class Image(models.Model):
     file = models.ImageField(upload_to='images/')
+    pub_date = models.DateTimeField(default=timezone.now)
     post_ref = models.ForeignKey(Posts, on_delete=models.CASCADE)

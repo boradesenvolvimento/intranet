@@ -1,0 +1,34 @@
+{% extends 'parts/base.html' %}
+{% block content %}
+<section>
+{% include 'parts/sidebarmain.html' %}
+<div class="container main">
+    <div class="container rounded mb-5 border-profile p-5">
+        <div class="container shadow rounded" style="padding:1.5rem; background-color:#adb5bd;">
+            <form method="post" enctype="multipart/form-data" action="{% url 'base:create_posts' %}">{% csrf_token %}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        <label for="id_body" class="control-label">Texto</label>
+                        <div class="container">
+                            <textarea  style="resize:none;font-size:18px;" name="body" cols="40" rows="10" class="form-control" required id="id_body"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="id_img">Imagens</label>
+                        <div class="container mb-3">
+                            <input type="file" name="imagens" multiple accept="image/*" id="id_img">
+                        </div>
+                    </div>
+                </fieldset><hr>
+                <div class="container">
+                    <center>
+                    <button class="btn btn-primary" type="submit">Postar</button>
+                    <a class="btn btn-secondary" href="/">Cancelar</a>
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

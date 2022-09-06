@@ -4,15 +4,20 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views import View
 
-from .models import Profile, check_tel, only_int
+from .models import Profile, check_tel, only_int, Posts, Image
 
 
 @login_required(login_url='/accounts/login/')
 def index_view(request):
-    return render(request, 'index.html', {})
+    context = {
+        'posts': Posts.objects.all().order_by('-pub_date'),
+    }
+    return render(request, 'index.html', context)
 
 @login_required(login_url='/accounts/login/')
 def perfil_usuario(request, user):
@@ -32,7 +37,12 @@ def self_profile(request, user):
                 if foto:
                     usuario.foto_perfil = foto
                 if form['email']:
-                    usuario.email = form['email']
+                    regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+                    if re.match(regex, form['email']):
+                        usuario.email = form['email']
+                    else:
+                        messages.error(request, 'Email inválido, gentileza verificar')
+                        raise ValidationError
                 if form['telefone']:
                     if re.match(r'[0-9]{2}[0-9]{5}[0-9]{4}', form['telefone']):
                         usuario.telefone = form['telefone']
@@ -48,6 +58,7 @@ def self_profile(request, user):
                     else:
                         usuario.ramal = ramal
                 if form['filial']:
+
                    usuario.filial = form['filial']
             except Exception as e:
                 raise e
@@ -59,3 +70,32 @@ def self_profile(request, user):
         return render(request, 'selfprofile.html', {'usuario':usuario})
     else:
         return HttpResponse('erro')
+
+def create_posts(request):
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        img = request.FILES.getlist('imagens')
+        if body:
+            autor = Profile.objects.get(username=request.user)
+            post = Posts.objects.create(text=body, autor=autor)
+            if img:
+                for q in img:
+                    Image.objects.create(file=q, post_ref=post)
+            return redirect('base:index')
+        print(body, img)
+    return render(request, 'createpost.html')
+
+class UserSearch(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('query')
+        profile_list = Profile.objects.filter(
+            Q(nomefunc__icontains=query)
+        )
+        if query == '' or not profile_list:
+            messages.error(request, 'Não encontrado usuário da busca, gentileza verificar.')
+            return render(request, 'search.html')
+        else:
+            context = {
+                'profile_list': profile_list
+            }
+            return render(request, 'search.html', context)

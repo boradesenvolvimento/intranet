@@ -109,7 +109,8 @@ body{
 }
 
 .gedf-wrapper {
-    margin-top: 1rem;
+    margin: 1rem 1rem 1rem 1rem;
+    width:80%;
 }
 
 @media (min-width: 992px) {
@@ -184,3 +185,32 @@ body{
 }
 
 /* profile /\ */
+
+/* searchbar */
+.searchbar{
+    border-radius: 0.2rem;
+    width: 20rem;
+    height: 3rem;
+    padding: 0 0 0 0.5rem;
+    font-size: 18px;
+    outline: none;
+}
+.searchbarbutton {
+    width: 3rem;
+    height: 3rem;
+    font-size: 24px;
+    color: #1f2f55;
+    background-color: grey;
+    border-radius: 0.2rem;
+}
+/* end searchbar */
+
+.mediaposts{
+    position: relative;
+}
+.mediaposts-item{
+    width: 100%;
+    height: fit-content;
+    object-fit: cover;
+    align:center;
+}
