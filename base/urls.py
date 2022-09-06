@@ -10,4 +10,5 @@ urlpatterns = [
     path('editar_perfil/<user>', views.self_profile, name='self_profile'),
     path('nova_postagem/', views.create_posts, name='create_posts'),
     path('search/', views.UserSearch.as_view(), name='profile-search'),
+    path('testconn/', views.testconn, name='testconn'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

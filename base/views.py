@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from .models import Profile, check_tel, only_int, Posts, Image
+from .dbtest import conndb
 
 
 @login_required(login_url='/intranet/accounts/login/')
@@ -100,3 +101,11 @@ class UserSearch(View):
                 'profile_list': profile_list
             }
             return render(request, 'search.html', context)
+
+def testconn(request):
+    try:
+        conn = conndb()
+    except Exception as e:
+        return HttpResponse('erro')
+    else:
+        return HttpResponse('sucesso')

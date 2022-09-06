@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import json
 import MySQLdb
 import cx_Oracle
 from pathlib import Path
 from django.contrib.messages import constants as messages
+from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
 
 MESSAGE_TAGS = {
@@ -27,6 +29,14 @@ MESSAGE_TAGS = {
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+with open(os.path.join(BASE_DIR, 'secrets.json')) as secret_file:
+    secrets = json.load(secret_file)
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        raise ImproperlyConfigured(f"Set the {setting} setting")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -102,9 +112,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bora01',
-        'USER': 'bora01',
-        'PASSWORD': 'Bor4dev01230database',
-        'HOST': 'mysql.bora.tec.br',
+        'USER': get_secret('DB_USER'),
+        'PASSWORD': get_secret('DB_PASS'),
+        'HOST': get_secret('DB_HOST'),
         'PORT': '3306',
     }
 }
@@ -146,10 +156,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = "/home/bora/www/static"
-MEDIA_ROOT = "/home/bora/www/media"
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
+STATIC_URL = get_secret('STATIC_URL')
+STATIC_ROOT = get_secret('STATIC_ROOT')
+
+MEDIA_URL = get_secret('MEDIA_URL')
+MEDIA_ROOT = get_secret('MEDIA_ROOT')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
