@@ -3,12 +3,12 @@ import re
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-
+from cx_Oracle import DatabaseError as cxerr
 from .models import Profile, check_tel, only_int, Posts, Image
 from .dbtest import conndb
 
@@ -72,6 +72,9 @@ def self_profile(request, user):
     else:
         return HttpResponse('erro')
 
+def admintools(request):
+    return render(request, 'admintools.html')
+
 @login_required(login_url='/intranet/accounts/login/')
 def create_posts(request):
     if request.method == 'POST':
@@ -101,6 +104,95 @@ class UserSearch(View):
                 'profile_list': profile_list
             }
             return render(request, 'search.html', context)
+
+def get_profile_praxio(request):
+    try:
+        conn = conndb()
+        cur = conn.cursor()
+        # BUSCA FUNCIONARIOS
+        cur.execute(
+            """
+                SELECT DISTINCT
+                       FF.CODINTFUNC, 
+                       FF.NOMEFUNC NOME,
+                       VW.DESCSECAO,
+                       VW.DESCFUNCAO,
+                       FF.CODIGOFL,
+                       CASE
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '1'  THEN 'SPO'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '2'  THEN 'REC'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '3'  THEN 'SSA'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '4'  THEN 'FOR'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '5'  THEN 'MCZ'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '6'  THEN 'NAT'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '7'  THEN 'JPA'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '8'  THEN 'AJU'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '9'  THEN 'VDC'
+                           WHEN FF.CODIGOEMPRESA = '1' AND FF.CODIGOFL = '10' THEN 'MG'
+                           WHEN FF.CODIGOEMPRESA = '2' AND FF.CODIGOFL = '1'  THEN 'CTG'
+                           WHEN FF.CODIGOEMPRESA = '2' AND FF.CODIGOFL = '2'  THEN 'TCO'
+                           WHEN FF.CODIGOEMPRESA = '2' AND FF.CODIGOFL = '3'  THEN 'UDI'
+                           WHEN FF.CODIGOEMPRESA = '2' AND FF.CODIGOFL = '4'  THEN 'TMA'
+                           WHEN FF.CODIGOEMPRESA = '2' AND FF.CODIGOFL = '5'  THEN 'VIX' 
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '30' THEN 'BMA'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '31' THEN 'BPE'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '32' THEN 'BEL'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '33' THEN 'BPB'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '34' THEN 'SLZ'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '35' THEN 'BAL'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '36' THEN 'THE'
+                           WHEN FF.CODIGOEMPRESA = '3' AND FF.CODIGOFL = '37' THEN 'BGM'
+                           WHEN FF.CODIGOEMPRESA = '4' AND FF.CODIGOFL = '40' THEN 'FMA'
+                       END FILIAL,
+                       CC.USUARIO,
+                       FF.CODIGOUF,
+                       TO_CHAR(FF.DTNASCTOFUNC,'YYYY-MM-DD') NASCIMENTO,
+                       TO_CHAR(FF.DTADMFUNC,'YYYY-MM-DD') ADMISSAO
+                FROM 
+                       FLP_FUNCIONARIOS FF,
+                       CTR_CADASTRODEUSUARIOS CC,
+                       VW_FUNCIONARIOS VW
+                WHERE
+                       FF.CODINTFUNC = VW.CODINTFUNC                   AND
+                       FF.CODINTFUNC = CC.CODINTFUNC                   AND
+                   
+                       FF.SITUACAOFUNC = 'A'                           AND
+                       
+                       FF.CODIGOEMPRESA IN (1,2,3,4)
+            """)
+        res = dictfetchall(cur)
+        cur.close()
+    except cxerr as err:
+        raise err
+    else:
+        for q in res:
+            try:
+                Profile.objects.get(codintfunc=q['CODINTFUNC'], username=q['USUARIO'], nomefunc=q['NOME'])
+            except ObjectDoesNotExist as err:
+                Profile.objects.create(
+                    codintfunc=q['CODINTFUNC'],
+                    uf=q['CODIGOUF'],
+                    dt_admfunc=q['ADMISSAO'],
+                    dt_nascfunc=q['NASCIMENTO'],
+                    nomefunc=q['NOME'],
+                    username=q['USUARIO'],
+                    filial=q['FILIAL'],
+                    descsecao=q['DESCSECAO'],
+                    descfuncao=q['DESCFUNCAO']
+                )
+            except Exception as e:
+                print('Erro:%s, error_type: %s' %(e, type(e)))
+            break
+        messages.success(request, 'Profiles atualizadas com sucesso!')
+        return redirect('base:admintools')
+
+def dictfetchall(cursor):
+    #Return all rows from a cursor as a dict
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 def testconn(request):
     try:

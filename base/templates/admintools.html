@@ -1,0 +1,30 @@
+{% extends 'parts/base.html' %}
+{% block content %}
+{% load globaltags %}
+{% include 'parts/sidebarmain.html' %}
+{% if request.user|has_group:'admintools' %}
+  <div class="container main">
+      {% for message in messages %}
+      <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+              {{ message }}
+          </div>
+      </div>
+      {% endfor %}
+      <div class="container rounded mb-5 border-profile p-5">
+      <div class="row">
+          <div class="col">
+            <h3>Sincroniza usuários</h3>
+              <a href="{% url 'base:get_profile_praxio' %}" style="text-decoration:none;">
+                  <button class="btn btn-primary" type="button">Update</button>
+              </a>
+          </div><hr>
+      </div>
+      </div>
+  </div>
+{% else %}
+<div class="container">
+    <h2>Usuário não tem permissão para acessar essa página</h2>
+</div>
+{% endif %}
+{% endblock %}
