@@ -8,10 +8,15 @@
         <div class="row">
             <div class="col-4 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" width="150" src="/media/{{ usuario.foto_perfil }}">
+                    {% if sidebaruser.foto_perfil %}
+                      <img src="/media/{{ sidebaruser.foto_perfil }}" class="rounded-circle mt-5" width="150">
+                    {% else %}
+                      <img src="/static/avatar-default.png" class="rounded-circle mt-5" width="150">
+                    {% endif %}
                     <span class="font-weight-bold">{{ usuario.nomefunc }}</span>
                     <span class="text-black-50">{{ usuario.bio|default_if_none:'' }}</span>
-                    <span class="text-black-50">{{ usuario.filial|default_if_none:'' }} - Ramal {{ usuario.ramal|default_if_none:'Não cadastrado' }}</span>
+                    <span class="text-black-50">{{ usuario.filial|default_if_none:'' }}
+                        {% if usuario.ramal %}Ramal {{ usuario.ramal }}{% endif %}</span>
                 </div>
             </div>
 
