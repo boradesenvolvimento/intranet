@@ -1,0 +1,46 @@
+{% if user.is_authenticated %}
+{% load globaltags %}
+{% profileuser user as sidebaruser %}
+<div class="sidebar1 d-flex flex-column flex-shrink-0 p-3">
+    <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+      <span class="fs-5 fw-semibold">Bora Intranet</span>
+    </div><hr>
+    <ul class="list-unstyled nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/intranet/" class="nav-link" aria-current="page">Home</a>
+      </li>
+      {% if request.user|has_group:'ferramentas' %}
+      <li class="nav-item">
+        <button class="nav-link" style="font-size: 20px;font-weight: 500;color: black;padding: 6px 8px 6px 16px;text-decoration: none;" data-bs-toggle="collapse" data-bs-target="#ferramentas-adm" aria-expanded="true">
+          Ferramentas
+        </button>
+        <div class="collapse" id="ferramentas-adm">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            {% if request.user|has_group:'postagem-feed' %}
+            <li><a href="{% url 'base:create_posts' %}" class="nav-link" aria-current="page">Nova Postagem</a></li>
+            {% endif %}
+            {% if request.user|has_group:'admintools' %}
+            <li><a href="{% url 'base:admintools' %}" class="nav-link" aria-current="page">Admin</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+    </ul><hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if sidebaruser.foto_perfil %}
+          <img src="/media/{{ sidebaruser.foto_perfil }}" alt="" width="32" height="32" class="rounded-circle me-2 mr-2">
+        {% else %}
+          <img src="/static/avatar-default.png" alt="" width="32" height="32" class="rounded-circle me-2 mr-2">
+        {% endif %}
+        <strong>{{ sidebaruser }}</strong>
+      </a>
+      <ul class="dropdown-menu shadow" aria-labelledby="dropdownUser2">
+        <li><a class="dropdown-item" href="{% url 'base:perfil_usuario' request.user %}">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="/intranet/accounts/logout/?next=/intranet/">Sign out</a></li>
+      </ul>
+    </div>
+  </div>
+{% endif %}
