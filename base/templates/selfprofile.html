@@ -17,6 +17,8 @@
                     <span class="text-black-50">{{ usuario.bio|default_if_none:'' }}</span>
                     <span class="text-black-50">{{ usuario.filial|default_if_none:'' }}
                         {% if usuario.ramal %}Ramal {{ usuario.ramal }}{% endif %}</span>
+                    <span class="text-black-50">Alterar senha <a href="{% url 'base:password_change' %}">
+                    <ion-icon name="key-outline"></ion-icon></a></span>
                 </div>
             </div>
 

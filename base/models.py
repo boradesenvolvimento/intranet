@@ -24,6 +24,7 @@ def only_int(value):
         int(value)
     except (ValueError, TypeError):
         raise ValidationError('Valor digitado não é um número')
+
 # models here.
 class Profile(models.Model):
     id = models.BigAutoField(primary_key=True)

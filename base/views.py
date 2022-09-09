@@ -59,7 +59,6 @@ def self_profile(request, user):
                     else:
                         usuario.ramal = ramal
                 if form['filial']:
-
                    usuario.filial = form['filial']
             except Exception as e:
                 raise e
@@ -72,6 +71,7 @@ def self_profile(request, user):
     else:
         return HttpResponse('erro')
 
+@login_required(login_url='/intranet/accounts/login/')
 def admintools(request):
     return render(request, 'admintools.html')
 
@@ -186,6 +186,19 @@ def get_profile_praxio(request):
         messages.success(request, 'Profiles atualizadas com sucesso!')
         return redirect('base:admintools')
 
+def syncuser(request):
+    if request.method == 'POST':
+        user = request.user
+        opass = request.POST.get('old_password')
+        pass1 = request.POST.get('new_password1')
+        pass2 = request.POST.get('new_password2')
+        if pass1 == pass2:
+            npass = Profile.objects.get(username=user)
+            if opass == npass.password:
+                npass.password = pass1
+                npass.save()
+    return HttpResponse('200')
+
 def dictfetchall(cursor):
     #Return all rows from a cursor as a dict
     columns = [col[0] for col in cursor.description]
@@ -201,3 +214,4 @@ def testconn(request):
         return HttpResponse('erro')
     else:
         return HttpResponse('sucesso')
+
