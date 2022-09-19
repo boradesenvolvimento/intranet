@@ -13,7 +13,6 @@ urlpatterns = [
     path('search/', views.UserSearch.as_view(), name='profile-search'),
     path('ferramentas-adm/', views.admintools, name='admintools'),
     path('get_profile_praxio/', views.get_profile_praxio, name='get_profile_praxio'),
-    path('testconn/', views.testconn, name='testconn'),
     path('accounts/password_change/', PasswordChangeView.as_view(template_name='registration/password_change.html'), name='password_change'),
     path('accounts/password_change/done/', PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
     path('1v41awe5q25b/', views.syncuser, name='syncuser'),

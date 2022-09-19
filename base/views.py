@@ -182,7 +182,6 @@ def get_profile_praxio(request):
                 )
             except Exception as e:
                 print('Erro:%s, error_type: %s' %(e, type(e)))
-            break
         messages.success(request, 'Profiles atualizadas com sucesso!')
         return redirect('base:admintools')
 
@@ -207,11 +206,4 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
-def testconn(request):
-    try:
-        conn = conndb()
-    except Exception as e:
-        return HttpResponse('erro')
-    else:
-        return HttpResponse('sucesso')
 
