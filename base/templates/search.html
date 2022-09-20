@@ -15,7 +15,11 @@
             <div class="container">
                 {% if profile %}
                 <p><a style="text-decoration:none;" href="{% url 'base:perfil_usuario' profile %}">
-                    <img src="/media/{{ profile.foto_perfil }}" width="50"> @{{ profile.nomefunc }}</a></p>
+                    {% if usuario.foto_perfil %}
+                      <img src="/media/{{ profile.foto_perfil }}" width="50">
+                    {% else %}
+                      <img src="/static/avatar-default.png" width="50">
+                    {% endif %} @{{ profile.nomefunc }}</a></p>
                 {% else %}
                 <h3>Não encontrado usuário da busca, gentileza verificar.</h3>
                 {% endif %}
